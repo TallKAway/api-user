@@ -10,6 +10,9 @@ async function AddUser(req, res) {
         password: req.body.password,
         avatar: req.body.avatar,
         phone: req.body.phone,
+        
+        service: req.body.service,
+        friends: req.body.friends,
     };
     try {
         console.log('Create user');

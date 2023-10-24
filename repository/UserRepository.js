@@ -9,8 +9,9 @@ function createUser(userData) {
             password: userData.password,
             avatar: userData.avatar,
             phone: userData.phone,
-            
-        
+            service: userData.service,
+            refreshToken: userData.refreshToken,
+            friends: userData.friends,
         },
     })
 }

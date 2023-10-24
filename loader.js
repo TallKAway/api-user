@@ -1,2 +1,2 @@
-const app = require('./index');
+const app = require('./app');
 require('./routes')(app);
