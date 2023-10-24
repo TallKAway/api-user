@@ -22,4 +22,13 @@ function deleteUser(user) {
     },
   });
 }
-module.exports = { createUser, fetchAllUser, deleteUser };
+
+function fetchUserWithEmail(email) {
+    return prisma.user.findFirst({
+        where: {
+            email: email
+        },
+       
+    });
+}
+module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail };

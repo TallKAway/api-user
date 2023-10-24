@@ -2,7 +2,8 @@ const {
   createUser,
   fetchAllUser,
   updateUser,
-  deleteUser,
+    deleteUser,
+    fetchUserWithEmail
 } = require("../repository/UserRepository");
 const ResponseMessage = require("../constants/ResponseMessage");
 
@@ -85,9 +86,39 @@ async function DeleteUser(req, res) {
   }
 }
 
+async function getUserByEmail(req, res) {
+    // #swagger.tags = ['Members']
+    //  #swagger.summary = 'Fecth on member detail'
+    /* #swagger.parameters['id'] = { in: 'path', description: 'ID of member' } */
+    try {
+        //console.log(req)
+        console.log(`Try to get member from email : ${req.params.email}`);
+        const memberData = await fetchUserWithEmail(req.params.email);
+        /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/Members" },
+            description: 'Member detail'
+        } */
+        console.log(`Got response`);
+        if (memberData === null) {
+            console.log(`MemberData is null on getMemberByEmail`);
+            return res.status(400).json({
+                msg_code: ResponseMessage.MSG_428,
+                msg: "Membre introuvable"
+            });
+        }
+        console.log(`Member found !`);
+        return res.status(201).json({msg_code: ResponseMessage.MSG_429, data: memberData});
+    } catch (error) {
+        console.log(`An error occured while getting member from email : ${req.params.email}`);
+        console.log(error)
+        return res.status(400).json({msg_code: ResponseMessage.MSG_430, msg: "Error Fetching Member"});
+    }
+}
+
 module.exports = {
   AddUser,
   UpdateUser,
   FetchUser,
   DeleteUser,
+  getUserByEmail
 };
