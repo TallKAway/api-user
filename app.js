@@ -30,6 +30,7 @@ api.get('/socket', (req, res) => {
 
 
 const server = http.createServer(api);
+route(api);
 let io = createSocket(server)
 global.io = io;
 

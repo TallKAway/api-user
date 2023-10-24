@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "dev": "nodemon index loader.js",
     "start": "node loader.js",
     "prisma:generate": "npx prisma generate",
     "prisma:pull": "npx prisma db pull",

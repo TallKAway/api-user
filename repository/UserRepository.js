@@ -2,17 +2,8 @@ const {prisma} = require('../utils/database');
 
 
 function createUser(userData) {
-    return prisma.userData.create({
-        data: {
-            pseudo: userData.pseudo,
-            email: userData.email,
-            password: userData.password,
-            avatar: userData.avatar,
-            phone: userData.phone,
-            service: userData.service,
-            refreshToken: userData.refreshToken,
-            friends: userData.friends,
-        },
+    return prisma.user.create({
+        data: userData,
     })
 }
 
@@ -40,4 +31,4 @@ function deleteUser(user) {
     });
 }
 
-exports.createUser = {createUser, fetchAllUser, deleteUser};
+module.exports= {createUser, fetchAllUser, deleteUser};

@@ -8,9 +8,7 @@ async function AddUser(req, res) {
         pseudo: req.body.pseudo,
         email: req.body.email,
         password: req.body.password,
-        avatar: req.body.avatar,
         phone: req.body.phone,
-        
         service: req.body.service,
         friends: req.body.friends,
     };
