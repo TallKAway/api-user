@@ -2,25 +2,20 @@ const {
   createUser,
   fetchAllUser,
   updateUser,
-    deleteUser,
-    fetchUserWithEmail
+  deleteUser,
+  fetchUserWithEmail,
 } = require("../repository/UserRepository");
 const ResponseMessage = require("../constants/ResponseMessage");
 
 async function AddUser(req, res) {
   const userData = {
-    pseudo: req.body.pseudo,
+    username: req.body.username,
     email: req.body.email,
+    cellphone: req.body.cellphone,
     password: req.body.password,
-    phone: req.body.phone,
-
-    service: req.body.service,
-    friends: req.body.friends,
+    friends: [],
   };
   try {
-    console.log(userData);
-    // res.json(userData);
-
     const user = await createUser(userData);
 
     res.status(201).json({
@@ -35,11 +30,11 @@ async function AddUser(req, res) {
 
 async function UpdateUser(req, res) {
   const userData = {
-    pseudo: req.body.pseudo,
+    username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-    avatar: req.body.avatar,
-    phone: req.body.phone,
+    cellphone: req.body.cellphone,
+    friends: req.body.friends,
   };
   try {
     console.log("Update user");
@@ -72,10 +67,8 @@ async function FetchUser(req, res) {
 
 async function DeleteUser(req, res) {
   try {
-    // res.json(req.params.id);
-    // const user = await req.payload;
-
     const userData = await deleteUser(req.params.id);
+
     res.status(200).json({
       status: ResponseMessage.MSG_313,
       message: "User deleted successfully",
@@ -87,32 +80,39 @@ async function DeleteUser(req, res) {
 }
 
 async function getUserByEmail(req, res) {
-    // #swagger.tags = ['Members']
-    //  #swagger.summary = 'Fecth on member detail'
-    /* #swagger.parameters['id'] = { in: 'path', description: 'ID of member' } */
-    try {
-        //console.log(req)
-        console.log(`Try to get member from email : ${req.params.email}`);
-        const memberData = await fetchUserWithEmail(req.params.email);
-        /* #swagger.responses[201] = {
+  // #swagger.tags = ['Members']
+  //  #swagger.summary = 'Fecth on member detail'
+  /* #swagger.parameters['id'] = { in: 'path', description: 'ID of member' } */
+  try {
+    //console.log(req)
+    console.log(`Try to get member from email : ${req.params.email}`);
+    const memberData = await fetchUserWithEmail(req.params.email);
+    /* #swagger.responses[201] = {
             schema: { $ref: "#/definitions/Members" },
             description: 'Member detail'
         } */
-        console.log(`Got response`);
-        if (memberData === null) {
-            console.log(`MemberData is null on getMemberByEmail`);
-            return res.status(400).json({
-                msg_code: ResponseMessage.MSG_428,
-                msg: "Membre introuvable"
-            });
-        }
-        console.log(`Member found !`);
-        return res.status(201).json({msg_code: ResponseMessage.MSG_429, data: memberData});
-    } catch (error) {
-        console.log(`An error occured while getting member from email : ${req.params.email}`);
-        console.log(error)
-        return res.status(400).json({msg_code: ResponseMessage.MSG_430, msg: "Error Fetching Member"});
+    console.log(`Got response`);
+    if (memberData === null) {
+      console.log(`MemberData is null on getMemberByEmail`);
+      return res.status(400).json({
+        msg_code: ResponseMessage.MSG_428,
+        msg: "Membre introuvable",
+      });
     }
+    console.log(`Member found !`);
+    return res
+      .status(201)
+      .json({ msg_code: ResponseMessage.MSG_429, data: memberData });
+  } catch (error) {
+    console.log(
+      `An error occured while getting member from email : ${req.params.email}`
+    );
+    console.log(error);
+    return res.status(400).json({
+      msg_code: ResponseMessage.MSG_430,
+      msg: "Error Fetching Member",
+    });
+  }
 }
 
 module.exports = {
@@ -120,5 +120,5 @@ module.exports = {
   UpdateUser,
   FetchUser,
   DeleteUser,
-  getUserByEmail
+  getUserByEmail,
 };
