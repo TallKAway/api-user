@@ -37,12 +37,12 @@ const ResponseMessage = require("../constants/ResponseMessage");
 // }
 
 async function UpdateUser(req, res) {
-  const userData = {
+    const userData = {
+    id: req.params.id,
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
     cellphone: req.body.cellphone,
-    friends: req.body.friends,
   };
   try {
     console.log("Update user");

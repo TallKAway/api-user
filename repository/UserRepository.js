@@ -1,4 +1,5 @@
 const { prisma } = require("../utils/database");
+const bcrypt = require('bcrypt');
 const axios = require("axios");
 
 const dotenv = require('dotenv');
@@ -36,6 +37,23 @@ function fetchUserWithEmail(email) {
 }
 
 
+function updateUser(userData) {
+     userData.password = bcrypt.hashSync(userData.password, 12);
+  return prisma.user.update({
+    where: {
+      id: userData.id,
+    },
+   data: {
+            username: userData.username, // Incluez les modifications que vous souhaitez apporter
+            email: userData.email,
+            password: userData.password,
+            cellphone: userData.cellphone,
+            friends: userData.friends,
+        },
+  });
+}
+
+
 
 async function register(email, password) {
 
@@ -50,4 +68,4 @@ async function register(email, password) {
 
 }
 
-module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register };
+module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register,updateUser };
