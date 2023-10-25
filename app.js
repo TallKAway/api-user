@@ -33,7 +33,7 @@ let io = createSocket(server);
 global.io = io;
 
 server
-  .listen(PORT, async () => {
+  .listen(PORT , async () => {
     console.info(`Listening on port ${PORT}`);
     try {
       await rabbitMQProducer.connect();

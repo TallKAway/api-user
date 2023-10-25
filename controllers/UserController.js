@@ -3,30 +3,38 @@ const {
   fetchAllUser,
   updateUser,
   deleteUser,
-  fetchUserWithEmail,
+    fetchUserWithEmail,
+    register,
 } = require("../repository/UserRepository");
 const ResponseMessage = require("../constants/ResponseMessage");
 
-async function AddUser(req, res) {
-  const userData = {
-    username: req.body.username,
-    email: req.body.email,
-    cellphone: req.body.cellphone,
-    password: req.body.password,
-    friends: [],
-  };
-  try {
-    const user = await createUser(userData);
+// async function AddUser(req, res) {
+//   const userData = {
+//     username: req.body.username,
+//     email: req.body.email,
+//     cellphone: req.body.cellphone,
+//     password: req.body.password,
+//     friends: [],
+//   };
+//   try {
+//     const user = await createUser(userData);
 
-    res.status(201).json({
-      status: ResponseMessage.MSG_311,
-      message: "User created successfully",
-      data: user,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-}
+      
+      
+
+//     const registrationResult = await register(user.email, user.password);
+
+//     res.status(201).json({
+//       status: ResponseMessage.MSG_311,
+//       message: "User created successfully",
+//       data: user,
+//       accessToken: registrationResult.accessToken,
+//       refreshToken: registrationResult.refreshToken,
+//     });
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// }
 
 async function UpdateUser(req, res) {
   const userData = {
@@ -116,9 +124,10 @@ async function getUserByEmail(req, res) {
 }
 
 module.exports = {
-  AddUser,
+//   AddUser,
   UpdateUser,
   FetchUser,
   DeleteUser,
   getUserByEmail,
+  
 };
