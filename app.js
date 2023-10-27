@@ -13,7 +13,9 @@ const api = express();
 dotenv.config();
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
-api.use(cors());
+api.use(cors({
+  origin: '*'
+}));
 
 api.use(express.static("public"));
 
