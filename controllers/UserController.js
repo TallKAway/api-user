@@ -36,6 +36,52 @@ const ResponseMessage = require("../constants/ResponseMessage");
 //   }
 // }
 
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Endpoints for user management
+ */
+
+/**
+ * @swagger
+ * /api/user/{id}:
+ *   put:
+ *     tags: [User]
+ *     summary: Update user
+ *     description: Update user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       description: User data to update
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               cellphone:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: User updated successfully
+ *       '400':
+ *         description: Bad request or user update failure
+ */
+
 async function UpdateUser(req, res) {
     const userData = {
     id: req.params.id,
@@ -58,6 +104,37 @@ async function UpdateUser(req, res) {
   }
 }
 
+
+
+
+
+/**
+ * @swagger
+ * /api/user:
+ *   get:
+ *     tags: [User]
+ *     summary: Fetch all users
+ *     description: Fetch all users (Requires Access Token)
+ *     parameters:
+  *       - in: header 
+  *         name: Authorization
+  *         schema:
+  *          type: string
+  *          format: jwt
+  *         description: JWT token
+  *         required: true
+  *     responses:
+ *       '200':
+ *         description: Users fetched successfully
+ *       '401':
+ *         description: Unauthorized access
+ *       '403':
+ *         description: Forbidden access
+ *       '400':
+ *         description: Bad request or user fetch failure
+
+ */
+
 async function FetchUser(req, res) {
   try {
     const user = await req.payload;
@@ -73,6 +150,28 @@ async function FetchUser(req, res) {
   }
 }
 
+
+
+/**
+ * @swagger
+ * /api/user/{id}:
+ *   delete:
+ *     tags: [User]
+ *     summary: Delete user
+ *     description: Delete user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: User deleted successfully
+ *       '400':
+ *         description: Bad request or user deletion failure
+ */
 async function DeleteUser(req, res) {
   try {
     const userData = await deleteUser(req.params.id);
@@ -87,18 +186,36 @@ async function DeleteUser(req, res) {
   }
 }
 
+
+
+
+/**
+ * @swagger
+ * /api/user/{email}:
+ *   get:
+ *     tags: [User]
+ *     summary: Get user by email
+ *     description: Get user by email address
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         description: User email
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '201':
+ *         description: User found successfully
+ *       '400':
+ *         description: Bad request or user fetch by email failure
+ */
 async function getUserByEmail(req, res) {
-  // #swagger.tags = ['Members']
-  //  #swagger.summary = 'Fecth on member detail'
-  /* #swagger.parameters['id'] = { in: 'path', description: 'ID of member' } */
+
   try {
     //console.log(req)
     console.log(`Try to get member from email : ${req.params.email}`);
     const memberData = await fetchUserWithEmail(req.params.email);
-    /* #swagger.responses[201] = {
-            schema: { $ref: "#/definitions/Members" },
-            description: 'Member detail'
-        } */
+  
     console.log(`Got response`);
     if (memberData === null) {
       console.log(`MemberData is null on getMemberByEmail`);

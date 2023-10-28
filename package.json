@@ -26,6 +26,8 @@
     "mongoose": "^7.6.3",
     "nodemon": "^3.0.1",
     "socket.io": "^4.7.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",
     "websocket": "^1.0.34"
   },

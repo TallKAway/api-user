@@ -7,6 +7,8 @@ const createSocket = require("./socket/socketio");
 const route = require("./routes");
 const http = require("http");
 const { rabbitMQProducer } = require("./amqp/producer");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require('./docs/swaggerConfig');
 
 const PORT = process.env.PORT || 3007;
 const api = express();
@@ -19,7 +21,7 @@ api.use(cors({
 
 api.use(express.static("public"));
 
-const ads = [{ Message: `Chat api is running on Port: ${PORT}` }];
+const ads = [{ Message: `User api is running on Port: ${PORT}` }];
 
 api.get("/", (req, res) => {
   res.send(ads);
@@ -27,6 +29,8 @@ api.get("/", (req, res) => {
 api.get("/socket", (req, res) => {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
+
+api.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 route(api);
 
