@@ -47,7 +47,7 @@ const ResponseMessage = require("../constants/ResponseMessage");
 
 /**
  * @swagger
- * /api/user/{id}:
+ * /user/user/{id}:
  *   put:
  *     tags: [User]
  *     summary: Update user
@@ -110,7 +110,7 @@ async function UpdateUser(req, res) {
 
 /**
  * @swagger
- * /api/user:
+ * /user/user:
  *   get:
  *     tags: [User]
  *     summary: Fetch all users
@@ -154,7 +154,7 @@ async function FetchUser(req, res) {
 
 /**
  * @swagger
- * /api/user/{id}:
+ * /user/user/{id}:
  *   delete:
  *     tags: [User]
  *     summary: Delete user
@@ -191,7 +191,7 @@ async function DeleteUser(req, res) {
 
 /**
  * @swagger
- * /api/user/{email}:
+ * /user/user/{email}:
  *   get:
  *     tags: [User]
  *     summary: Get user by email
