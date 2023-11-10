@@ -4,7 +4,7 @@ const {
   updateUser,
   deleteUser,
     fetchUserWithEmail,
-    register,
+    register,addFriend,deleteFriend
 } = require("../repository/UserRepository");
 const ResponseMessage = require("../constants/ResponseMessage");
 
@@ -140,6 +140,7 @@ async function FetchUser(req, res) {
     const user = await req.payload;
 
     const userData = await fetchAllUser(user);
+    console.log(userData);
     res.status(200).json({
       status: ResponseMessage.MSG_315,
       message: "User fetched successfully",
@@ -240,11 +241,50 @@ async function getUserByEmail(req, res) {
   }
 }
 
+
+
+async function UpdateFriends(req, res) {
+  try {
+    const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
+    const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
+
+    // Appelez la fonction addFriend avec les identifiants appropriés
+    const userData = await addFriend(userId, friendId);
+    console.log(userData);
+
+    res.status(200).json({
+      status: ResponseMessage.MSG_313,
+      message: "Friend added successfully",
+      data: userData,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+
+async function DeleteFriend(req, res) { 
+  try {
+
+    const userData = await deleteFriend(req.params.id, req.body.friendId);
+    console.log(userData);
+    res.status(200).json({
+      status: ResponseMessage.MSG_313,
+      message: "Friend deleted successfully",
+      data: userData,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+
 module.exports = {
 //   AddUser,
   UpdateUser,
   FetchUser,
   DeleteUser,
   getUserByEmail,
-  
+  UpdateFriends,
+  DeleteFriend
 };

@@ -16,6 +16,9 @@ function fetchAllUser(user) {
     where: {
         id: user.id,
     },
+    include: {
+      friends: true,
+    },
   });
 }
 
@@ -68,4 +71,40 @@ async function register(email, password) {
 
 }
 
-module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register,updateUser };
+
+
+async function addFriend(userId, friendId) {
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      friends: {
+        connect: friendId.map(id => ({ id })),
+      },
+    },
+    include: {
+      friends: true,
+    },
+  });
+  return user;
+}
+
+
+function deleteFriend(userId, friendId) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: {
+      friends: {
+        disconnect: friendId.map(id => ({ id })),
+      },
+    },
+  });
+}
+
+
+
+
+
+
+
+
+module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register,updateUser,addFriend,deleteFriend };
