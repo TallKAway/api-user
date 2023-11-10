@@ -5,10 +5,10 @@ const route = Router();
 
 route.get("/user", isAuthenticated, UserController.FetchUser);
 // route.post("/user/add", UserController.AddUser);
-route.put("/user/update/:id", UserController.UpdateUser);
-route.delete("/user/delete/:id", UserController.DeleteUser);
-route.get("/get/with/:email", UserController.getUserByEmail);
-route.put("/user/add/friend/:id", UserController.UpdateFriends);
-route.delete("/user/delete/friend/:id", UserController.DeleteFriend);
+route.put("/user/update/:id",isAuthenticated, UserController.UpdateUser);
+route.delete("/user/delete/:id",isAuthenticated, UserController.DeleteUser);
+route.get("/get/with/:email",isAuthenticated, UserController.getUserByEmail);
+route.put("/user/add/friend/:id",isAuthenticated, UserController.UpdateFriends);
+route.delete("/user/delete/friend/:id",isAuthenticated, UserController.DeleteFriend);
 
 module.exports = route;
