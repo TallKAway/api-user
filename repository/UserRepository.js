@@ -11,15 +11,34 @@ function createUser(userData) {
   });
 }
 
-function fetchAllUser(user) {
-  return prisma.user.findMany({
+function exclude(user, keys) {
+  return Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));
+}
+
+
+
+async function fetchAllUser(user) {
+  
+  const users = await prisma.user.findMany({
     where: {
         id: user.id,
     },
     include: {
-      friends: true,
+      friends: {
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          cellphone: true,
+        }
+      },
     },
   });
+
+
+  // Exclude password field
+  const usersWithoutPassword = users.map(user => exclude(user, ['password']));
+  return usersWithoutPassword;
 }
 
 function deleteUser(user) {
