@@ -10,5 +10,6 @@ route.delete("/user/delete/:id",isAuthenticated, UserController.DeleteUser);
 route.get("/get/with/:email",isAuthenticated, UserController.getUserByEmail);
 route.put("/user/add/friend/:id",isAuthenticated, UserController.UpdateFriends);
 route.delete("/user/delete/friend/:id",isAuthenticated, UserController.DeleteFriend);
+route.get("/user/:id",isAuthenticated, UserController.GetUserById);
 
 module.exports = route;

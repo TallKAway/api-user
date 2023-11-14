@@ -119,11 +119,12 @@ function deleteFriend(userId, friendId) {
   });
 }
 
+async function fetchUserById(id) {
+  return prisma.user.findFirst({
+    where: {
+      id: id,
+    },
+  }).then(user => exclude(user, ['cellphone', 'email', 'password', 'friends']));
+}
 
-
-
-
-
-
-
-module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register,updateUser,addFriend,deleteFriend };
+module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register,updateUser,addFriend,deleteFriend, fetchUserById };

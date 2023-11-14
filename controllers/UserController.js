@@ -4,7 +4,8 @@ const {
   updateUser,
   deleteUser,
     fetchUserWithEmail,
-    register,addFriend,deleteFriend
+    register,addFriend,deleteFriend,
+    fetchUserById
 } = require("../repository/UserRepository");
 const ResponseMessage = require("../constants/ResponseMessage");
 
@@ -278,6 +279,23 @@ async function DeleteFriend(req, res) {
   }
 }
 
+async function GetUserById(req, res) {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const user = await fetchUserById(id);
+
+    res.status(200).json({
+      status: ResponseMessage.MSG_315,
+      message: "User fetched successfully",
+      data: user,
+    });
+
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
 
 module.exports = {
 //   AddUser,
@@ -286,5 +304,6 @@ module.exports = {
   DeleteUser,
   getUserByEmail,
   UpdateFriends,
-  DeleteFriend
+  DeleteFriend,
+  GetUserById
 };
