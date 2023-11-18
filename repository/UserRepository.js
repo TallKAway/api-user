@@ -49,15 +49,16 @@ function deleteUser(user) {
   });
 }
 
-function fetchUserWithEmail(email) {
-    return prisma.user.findFirst({
+
+
+function findUserByEmail(email) {
+    return prisma.user.findUnique({
         where: {
-            email: email
+            email: email,
         },
-       
+        
     });
 }
-
 
 function updateUser(userData) {
      userData.password = bcrypt.hashSync(userData.password, 12);
@@ -94,7 +95,7 @@ async function register(email, password) {
 
 async function addFriend(userId, friendId) {
   const user = await prisma.user.update({
-    where: { id: userId,},
+    where: { id: userId},
     data: {
       friends: {
         connect: friendId.map(id => ({ id })),
@@ -139,12 +140,14 @@ function deleteFriend(userId, friendId) {
   });
 }
 
-async function fetchUserById(id) {
-  return prisma.user.findFirst({
-    where: {
-      id: id,
-    },
-  }).then(user => exclude(user, ['cellphone', 'email', 'password', 'friends']));
+function fetchUserById(userId) {
+    console.log('ID:', userId);
+    return prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
 }
 
-module.exports = { createUser, fetchAllUser, deleteUser, fetchUserWithEmail, register,updateUser,addFriend,deleteFriend, fetchUserById };
+
+module.exports = { createUser, fetchAllUser, deleteUser, register,updateUser,addFriend,deleteFriend, fetchUserById,findUserByEmail};
