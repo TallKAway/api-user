@@ -246,11 +246,29 @@ async function getUserByEmail(req, res) {
 
 async function UpdateFriends(req, res) {
   try {
-    const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
-    const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
 
+    const {userId} = req.payload;  // Utilisez directement l'ID depuis le token
+    // const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
+    const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
+console.log(userId);
     // Appelez la fonction addFriend avec les identifiants appropriés
+    if (userId === friendId) { 
+      return res.status(400).json({
+        status: ResponseMessage.MSG_318,
+        message: "You can't add yourself as a friend",
+      });
+    }
+    
+   
     const userData = await addFriend(userId, friendId);
+
+    
+ if (Array.isArray(userData.friendIds) && userData.friendIds.includes(friendId)) {
+      return res.status(400).json({
+        status: ResponseMessage.MSG_400,
+        message: "Friend ID already exists in your friends list",
+      });
+    }
     console.log(userData);
 
     res.status(200).json({

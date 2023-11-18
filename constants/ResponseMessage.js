@@ -21,4 +21,10 @@ module.exports = {
     MSG_313: 'MSG_313',     // 'USER deleted successfully.',
     MSG_314: 'MSG_314',     // 'USER not found.',
     MSG_315: 'MSG_315',     // 'GET USER successfully.',
+    MSG_318: 'MSG_318',     // 'USER updated failed.',
+    MSG_319: 'MSG_319',     // 'USER deleted failed.',
+    MSG_320: 'MSG_320',     // 'USER fetched successfully.',
+    MSG_321: 'MSG_321',     // 'USER fetched failed.',
+    MSG_322: 'MSG_322',     // 'USER already added',
+
 };

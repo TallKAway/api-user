@@ -94,16 +94,36 @@ async function register(email, password) {
 
 async function addFriend(userId, friendId) {
   const user = await prisma.user.update({
-    where: { id: userId },
+    where: { id: userId,},
     data: {
       friends: {
         connect: friendId.map(id => ({ id })),
       },
     },
     include: {
-      friends: true,
+      friends: {
+        select: {
+          id: true,
+          username: true,
+          password: false,
+          email: true,
+          cellphone: true,
+          inverseFriends: {
+            select: {
+              id: true,
+              username: true,
+              password: false,
+              email: true,
+              cellphone: true,
+            }
+          }
+        }
+      },
     },
   });
+// const usersWithoutPassword = ;
+//   return usersWithoutPassword;
+
   return user;
 }
 
