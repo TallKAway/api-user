@@ -145,7 +145,27 @@ function fetchUserById(userId) {
     return prisma.user.findUnique({
         where: {
             id: userId,
+      },
+      include: {
+        friends: {
+          select: {
+            id: true,
+            username: true,
+            password: false,
+            email: true,
+            cellphone: true,
+            inverseFriends: {
+              select: {
+                id: true,
+                username: true,
+                password: false,
+                email: true,
+                cellphone: true,
+              }
+            }
+          }
         },
+      },
     });
 }
 
