@@ -250,18 +250,17 @@ async function UpdateFriends(req, res) {
     const {userId} = req.payload;  // Utilisez directement l'ID depuis le token
     // const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
     const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
-console.log(userId);
+    console.log(userId);
     // Appelez la fonction addFriend avec les identifiants appropriés
     console.log(friendId);
     
-    if (userId !== friendId) { 
+    if (userId === friendId) { 
       return res.status(400).json({
         status: ResponseMessage.MSG_318,
         message: "You can't add yourself as a friend",
       });
     }
     
-   
     const userData = await addFriend(userId, friendId);
 
     
