@@ -252,7 +252,9 @@ async function UpdateFriends(req, res) {
     const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
 console.log(userId);
     // Appelez la fonction addFriend avec les identifiants appropriés
-    if (userId === friendId) { 
+    console.log(friendId);
+    
+    if (userId !== friendId) { 
       return res.status(400).json({
         status: ResponseMessage.MSG_318,
         message: "You can't add yourself as a friend",
@@ -265,7 +267,7 @@ console.log(userId);
     
  if (Array.isArray(userData.friendIds) && userData.friendIds.includes(friendId)) {
       return res.status(400).json({
-        status: ResponseMessage.MSG_400,
+        status: ResponseMessage.MSG_318,
         message: "Friend ID already exists in your friends list",
       });
     }
