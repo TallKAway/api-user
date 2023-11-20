@@ -46,6 +46,80 @@ const ResponseMessage = require("../constants/ResponseMessage");
  *   description: Endpoints for user management
  */
 
+
+/**
+ * @swagger
+ * /user/add/friend/:
+ *   put:
+ *     tags: [User]
+ *     summary: Add friend to user
+ *     description: Add friend to user by ID
+ *     parameters:
+ *       - in: header 
+  *         name: Authorization
+  *         schema:
+  *          type: string
+  *          format: jwt
+  *         description: JWT token
+  *         required: true
+ *       - in: payload
+ *         name: id
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       description: User data to update
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               friends: [friendId]       
+ *     responses:
+ *       '201':
+ *         description: User updated successfully
+ *       '400':
+ *         description: Bad request or user update failure
+ */
+async function UpdateFriends(req, res) {
+  try {
+
+    const {userId} = req.payload;  // Utilisez directement l'ID depuis le token
+    // const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
+    const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
+    console.log(userId);
+    // Appelez la fonction addFriend avec les identifiants appropriés
+    console.log(friendId);
+    
+    if (userId === friendId) { 
+      return res.status(400).json({
+        status: ResponseMessage.MSG_318,
+        message: "You can't add yourself as a friend",
+      });
+    }
+    
+    const userData = await addFriend(userId, friendId);
+
+    
+ if (Array.isArray(userData.friendIds) && userData.friendIds.includes(friendId)) {
+      return res.status(400).json({
+        status: ResponseMessage.MSG_318,
+        message: "Friend ID already exists in your friends list",
+      });
+    }
+    console.log(userData);
+
+    res.status(200).json({
+      status: ResponseMessage.MSG_313,
+      message: "Friend added successfully",
+      data: userData,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 /**
  * @swagger
  * /user/user/{id}:
@@ -54,6 +128,13 @@ const ResponseMessage = require("../constants/ResponseMessage");
  *     summary: Update user
  *     description: Update user by ID
  *     parameters:
+ *       - in: header 
+  *         name: Authorization
+  *         schema:
+  *          type: string
+  *          format: jwt
+  *         description: JWT token
+  *         required: true
  *       - in: path
  *         name: id
  *         required: true
@@ -162,6 +243,13 @@ async function FetchUser(req, res) {
  *     summary: Delete user
  *     description: Delete user by ID
  *     parameters:
+ *       - in: header 
+  *         name: Authorization
+  *         schema:
+  *          type: string
+  *          format: jwt
+  *         description: JWT token
+  *         required: true
  *       - in: path
  *         name: id
  *         required: true
@@ -199,6 +287,16 @@ async function DeleteUser(req, res) {
  *     summary: Get user by email
  *     description: Get user by email address
  *     parameters:
+ *       - in: header 
+  *         name: Authorization
+  *         schema:
+  *          type: string
+  *          format: jwt
+  *         description: JWT token
+  *         required: true
+ *       - in: path
+ *         name: id
+ *         required: true
  *       - in: path
  *         name: email
  *         required: true
@@ -242,45 +340,38 @@ async function getUserByEmail(req, res) {
   }
 }
 
+/**
+ * @swagger
+ * /user/user/{email}:
+ *   get:
+ *     tags: [User]
+ *     summary: Delete friend from user
+ *     description: delete friend from user by ID
+ *     parameters:
+ *       - in: header 
+  *         name: Authorization
+  *         schema:
+  *          type: string
+  *          format: jwt
+  *         description: JWT token
+  *         required: true
+ *       - in: path
+ *         name: email
+ *         required: true
+ *       - in: payload
+ *         name: userId
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
 
+ *     responses:
+ *       '201':
+ *         description: User found successfully
+ *       '400':
+ *         description: Bad request or user fetch by email failure
+ */
 
-async function UpdateFriends(req, res) {
-  try {
-
-    const {userId} = req.payload;  // Utilisez directement l'ID depuis le token
-    // const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
-    const friendId = req.body.friendId;  // Assurez-vous que vous avez le bon champ pour l'ID de l'ami
-    console.log(userId);
-    // Appelez la fonction addFriend avec les identifiants appropriés
-    console.log(friendId);
-    
-    if (userId === friendId) { 
-      return res.status(400).json({
-        status: ResponseMessage.MSG_318,
-        message: "You can't add yourself as a friend",
-      });
-    }
-    
-    const userData = await addFriend(userId, friendId);
-
-    
- if (Array.isArray(userData.friendIds) && userData.friendIds.includes(friendId)) {
-      return res.status(400).json({
-        status: ResponseMessage.MSG_318,
-        message: "Friend ID already exists in your friends list",
-      });
-    }
-    console.log(userData);
-
-    res.status(200).json({
-      status: ResponseMessage.MSG_313,
-      message: "Friend added successfully",
-      data: userData,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-}
 
 
 async function DeleteFriend(req, res) { 
@@ -319,7 +410,7 @@ async function GetUserById(req, res) {
 
 async function CurrentUser(req, res) { 
   try {
-    //  const {userId} = req.payload;  // Utilisez directement l'ID depuis le token
+
 const userId = req.params.id;  // Utilisez directement l'ID depuis les paramètres
    
 console.log(userId);
